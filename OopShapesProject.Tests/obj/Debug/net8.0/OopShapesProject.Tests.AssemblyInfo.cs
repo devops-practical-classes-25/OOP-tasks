@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OopShapesProject.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17882280ef87835e59b31a9f3c04b6a79213920f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3826bdd3f2bd657d1abd6546115cf64f386e35e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("OopShapesProject.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OopShapesProject.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
