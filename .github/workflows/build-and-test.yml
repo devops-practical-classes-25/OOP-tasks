@@ -1,0 +1,35 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - "main*" 
+  push:
+    branches:
+      - "implemented*" 
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run Tests with Coverage
+      run: dotnet test --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
+
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./TestResults/**/coverage.cobertura.xml
