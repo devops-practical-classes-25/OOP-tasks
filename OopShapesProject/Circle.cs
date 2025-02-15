@@ -1,5 +1,7 @@
 public class Circle : Shape
 {
+    private const string InvalidRadiusMessage = "Радиус должен быть положительным числом.";
+
     public double Radius { get; }
 
     /// <summary>
@@ -9,26 +11,18 @@ public class Circle : Shape
     /// <exception cref="ArgumentException">Выбрасывается, если радиус меньше или равен нулю.</exception>
     public Circle(double radius)
     {
-        if (radius <= 0)
-            throw new ArgumentException("Радиус должен быть положительным числом");
-        Radius = radius;
+
     }
 
     /// <summary>
     /// Вычисляет площадь окружности.
     /// </summary>
     /// <returns>Площадь окружности, вычисленная по формуле π * r².</returns>
-    public override double GetArea()
-    {
-        return Math.PI * Radius * Radius;
-    }
+
 
     /// <summary>
     /// Вычисляет длину окружности (периметр).
     /// </summary>
     /// <returns>Длина окружности, вычисленная по формуле 2 * π * r.</returns>
-    public override double GetPerimeter()
-    {
-        return 2 * Math.PI * Radius;
-    }
+
 }
