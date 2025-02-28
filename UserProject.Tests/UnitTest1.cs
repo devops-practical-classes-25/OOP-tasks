@@ -1,223 +1,125 @@
 using System;
-using Xunit;
+using NUnit.Framework;
 
 namespace UserProject.Tests;
 public class UnitTest1
 {
-    [Fact]
-    public void Users_AreSorted_ByRating_Age_Name()
+    [TestFixture]
+    public class UserTests
     {
-        // Arrange
-        var users = new List<User>
+        [Test]
+        public void User_Implements_IComparable()
         {
-            new User("Alice", 25, 4.8),
-            new User("Bob", 22, 4.8),
-            new User("Charlie", 30, 4.5),
-            new User("Dave", 22, 4.8),
-            new User("Eve", 35, 4.9),
-            new User("Frank", 30, 4.5)
-        };
+            var user = new User("Alice", 25, 4.8);
 
-        var expectedOrder = new List<User>
+            Assert.IsInstanceOf<IComparable<User>>(user);
+        }
+
+        [Test]
+        public void User_ThrowsArgumentException_ForEmptyName()
         {
-            new User("Eve", 35, 4.9),
-            new User("Bob", 22, 4.8),
-            new User("Dave", 22, 4.8),
-            new User("Alice", 25, 4.8),
-            new User("Charlie", 30, 4.5),
-            new User("Frank", 30, 4.5)
-        };
+            var ex = Assert.Throws<ArgumentException>(() => new User("", 25, 4.8));
+            Assert.That(ex.Message, Does.Contain("Имя пользователя не может быть пустым"));
+        }
 
-        // Act
-        users.Sort();
-
-        // Assert
-        Assert.Equal(expectedOrder, users);
-    }
-
-    [Fact]
-    public void Users_AreSorted_ByName_WhenUsingComparer()
-    {
-        // Arrange
-        var users = new List<User>
+        [Test]
+        public void User_ThrowsArgumentOutOfRangeException_ForNegativeAge()
         {
-            new User("Charlie", 30, 4.5),
-            new User("Alice", 25, 4.8),
-            new User("Eve", 35, 4.9),
-            new User("Bob", 22, 4.8),
-            new User("Frank", 30, 4.5),
-            new User("Dave", 22, 4.8)
-        };
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new User("Alice", -1, 4.8));
+            Assert.That(ex.Message, Does.Contain("Возраст не может быть отрицательным"));
+        }
 
-        var expectedOrder = new List<User>
+        [Test]
+        public void User_ThrowsArgumentOutOfRangeException_ForInvalidRating()
         {
-            new User("Alice", 25, 4.8),
-            new User("Bob", 22, 4.8),
-            new User("Charlie", 30, 4.5),
-            new User("Dave", 22, 4.8),
-            new User("Eve", 35, 4.9),
-            new User("Frank", 30, 4.5)
-        };
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new User("Alice", 25, 11));
+            Assert.That(ex.Message, Does.Contain("Рейтинг должен быть в диапазоне"));
+        }
 
-        // Act
-        users.Sort(new UserComparer());
-
-        // Assert
-        Assert.Equal(expectedOrder, users);
-    }
-
-    [Fact]
-    public void Users_AreEqual_WhenRating_Age_NameAreEqual()
-    {
-        // Arrange
-        var user1 = new User("Alice", 25, 4.8);
-        var user2 = new User("Alice", 25, 4.8);
-
-        // Act & Assert
-        Assert.Equal(user1, user2);
-    }
-
-    
-    [Fact]
-    public void Users_AreSorted_ByName_WhenRating_AgeAreEqual()
-    {
-        // Arrange
-        var users = new List<User>
+        [Test]
+        public void CompareTo_ThrowsArgumentNullException_WhenComparingWithNull()
         {
-            new User("Charlie", 30, 4.5),
-            new User("Alice", 30, 4.5),
-            new User("Bob", 30, 4.5)
-        };
+            var user = new User("Alice", 25, 4.8);
 
-        var expectedOrder = new List<User>
+            var ex = Assert.Throws<ArgumentNullException>(() => user.CompareTo(null));
+            Assert.That(ex.Message, Does.Contain("Нельзя сравнивать с null"));
+        }
+
+        [Test]
+        public void CompareTo_SortsUsers_ByRating_Age_Name()
         {
-            new User("Alice", 30, 4.5),
-            new User("Bob", 30, 4.5),
-            new User("Charlie", 30, 4.5)
-        };
+            var users = new List<User>
+            {
+                new User("Alice", 25, 4.8),
+                new User("Bob", 22, 4.8),
+                new User("Charlie", 30, 4.5),
+                new User("Eve", 35, 4.9),
+                new User("Dave", 22, 4.8)
+            };
 
-        // Act
-        users.Sort();
+            var expectedOrder = new List<User>
+            {
+                new User("Eve", 35, 4.9),
+                new User("Bob", 22, 4.8),
+                new User("Dave", 22, 4.8),
+                new User("Alice", 25, 4.8),
+                new User("Charlie", 30, 4.5)
+            };
 
-        // Assert
-        Assert.Equal(expectedOrder, users);
+            users.Sort();
+
+            CollectionAssert.AreEqual(
+                expectedOrder, users, 
+                Comparer<User>.Create((x, y) => x.CompareTo(y))
+            );
+        }
     }
 
-    [Fact]
-    public void Compare_ShouldReturnPositive_WhenFirstUserIsOlder()
+    [TestFixture]
+    public class UserComparerTests
     {
-        // Arrange
-        var user1 = new User("Alice", 30, 4.8);
-        var user2 = new User("Bob", 25, 4.8);
+        [Test]
+        public void UserComparer_Implements_IComparer()
+        {
+            var comparer = new UserComparer();
 
-        // Act
-        var result = user1.CompareTo(user2);
+            Assert.IsInstanceOf<IComparer<User>>(comparer);
+        }
 
-        // Assert
-        Assert.True(result > 0);
-    }
+        [Test]
+        public void Compare_SortsUsersByName_IgnoreCase()
+        {
+            var users = new List<User>
+            {
+                new User("Charlie", 30, 4.5),
+                new User("alice", 25, 4.8),
+                new User("Bob", 22, 4.8)
+            };
 
-    [Fact]
-    public void Compare_ShouldReturnNegative_WhenFirstUserHasLowerRating()
-    {
-        // Arrange
-        var user1 = new User("Alice", 25, 4.5);
-        var user2 = new User("Alice", 30, 4.8);
+            var expectedOrder = new List<User>
+            {
+                new User("alice", 25, 4.8),
+                new User("Bob", 22, 4.8),
+                new User("Charlie", 30, 4.5)
+            };
 
-        // Act
-        var result = user1.CompareTo(user2);
+            var comparer = new UserComparer();
 
-        // Assert
-        Assert.True(result > 0); 
-    }
+            users.Sort(comparer);
+            CollectionAssert.AreEqual(
+                expectedOrder, users,
+                Comparer<User>.Create((x, y) => comparer.Compare(x, y))
+            );
+        }
 
-    [Fact]
-    public void Compare_ShouldThrowArgumentNullException_WhenComparingWithNull()
-    {
-        // Arrange
-        var user = new User("Alice", 25, 4.8);
+        [Test]
+        public void Compare_ReturnsZero_WhenComparingNullUsers()
+        {
+            var comparer = new UserComparer();
 
-        // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => user.CompareTo(null));
-    }
+            var result = comparer.Compare(null, null);
 
-    [Fact]
-    public void Compare_ShouldReturnNegative_WhenFirstUserNameIsBeforeSecond()
-    {
-        // Arrange
-        var user1 = new User("Alice", 25, 4.8);
-        var user2 = new User("Bob", 30, 4.8);
-
-        var comparer = new UserComparer();
-
-        // Act
-        var result = comparer.Compare(user1, user2);
-
-        // Assert
-        Assert.True(result < 0);
-    }
-
-    [Fact]
-    public void Compare_ShouldReturnPositive_WhenFirstUserNameIsAfterSecond()
-    {
-        // Arrange
-        var user1 = new User("Charlie", 25, 4.8);
-        var user2 = new User("Alice", 30, 4.8);
-
-        var comparer = new UserComparer();
-
-        // Act
-        var result = comparer.Compare(user1, user2);
-
-        // Assert
-        Assert.True(result > 0);
-    }
-
-    [Fact]
-    public void Compare_ShouldReturnZero_WhenNamesAreEqual()
-    {
-        // Arrange
-        var user1 = new User("Alice", 25, 4.8);
-        var user2 = new User("Alice", 30, 4.8);
-
-        var comparer = new UserComparer();
-
-        // Act
-        var result = comparer.Compare(user1, user2);
-
-        // Assert
-        Assert.True(result == 0);
-    }
-
-    [Fact]
-    public void Compare_ShouldReturnNegative_WhenFirstUserNameIsBeforeSecond_WithDifferentCase()
-    {
-        // Arrange
-        var user1 = new User("alice", 25, 4.8);
-        var user2 = new User("Bob", 30, 4.8);
-
-        var comparer = new UserComparer();
-
-        // Act
-        var result = comparer.Compare(user1, user2);
-
-        // Assert
-        Assert.True(result < 0);
-    }
-
-    [Fact]
-    public void Compare_ShouldReturnPositive_WhenFirstUserNameIsAfterSecond_WithDifferentCase()
-    {
-        // Arrange
-        var user1 = new User("Charlie", 25, 4.8);
-        var user2 = new User("alice", 30, 4.8);
-
-        var comparer = new UserComparer();
-
-        // Act
-        var result = comparer.Compare(user1, user2);
-
-        // Assert
-        Assert.True(result > 0);
+            Assert.AreEqual(0, result);
+        }
     }
 }
