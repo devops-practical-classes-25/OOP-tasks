@@ -23,19 +23,9 @@ public class User : IComparable<User>
     /// </exception>
     public User(string name, int age, double rating)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException(EmptyNameMessage, nameof(name));
-
-        if (age < 0)
-            throw new ArgumentOutOfRangeException(nameof(age), NegativeAgeMessage);
-
-        if (rating < 0 || rating > 10)
-            throw new ArgumentOutOfRangeException(nameof(rating), InvalidRatingMessage);
-
-        Name = name;
-        Age = age;
-        Rating = rating;
+        throw new NotImplementedException("Конструктор не реализован.");
     }
+
 
     /// <summary>
     /// Сравнивает текущего пользователя с другим пользователем по рейтингу, возрасту и имени.
@@ -49,20 +39,11 @@ public class User : IComparable<User>
     /// <exception cref="ArgumentNullException">Выбрасывается, если переданный пользователь равен null.</exception>
     public int CompareTo(User? other)
     {
-        if (other == null) 
-            throw new ArgumentNullException(nameof(other), NullComparisonMessage);
-
-        int ratingComparison = other.Rating.CompareTo(this.Rating);
-        if (ratingComparison != 0) return ratingComparison;
-
-        int ageComparison = this.Age.CompareTo(other.Age);
-        if (ageComparison != 0) return ageComparison;
-
-        return this.Name.CompareTo(other.Name);
+        throw new NotImplementedException("Метод CompareTo не реализован.");
     }
 
     public override string ToString()
     {
-        return $"{Name} (Age: {Age}, Rating: {Rating})";
+        throw new NotImplementedException("Метод ToString не реализован.");
     }
 }
