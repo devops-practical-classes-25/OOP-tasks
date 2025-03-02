@@ -11,31 +11,37 @@ namespace LibraryProject.Models
 
         public string DownloadLink { get; }
 
+        /// <summary>
+        /// Создает экземпляр цифровой книги с заданными параметрами.
+        /// </summary>
+        /// <param name="title">Название книги.</param>
+        /// <param name="author">Автор книги.</param>
+        /// <param name="year">Год издания книги.</param>
+        /// <param name="downloadLink">Ссылка на скачивание книги.</param>
         public DigitalBook(string title, string author, int year, string downloadLink)
             : base(title, author, year)
         {
-            Validate(title, author, year, downloadLink);
-            DownloadLink = downloadLink;
+            throw new NotImplementedException("Конструктор не реализован");
         }
 
+        /// <summary>
+        /// Проверяет корректность данных книги.
+        /// </summary>
+        /// <param name="title">Название книги.</param>
+        /// <param name="author">Автор книги.</param>
+        /// <param name="year">Год издания книги.</param>
+        /// <param name="downloadLink">Ссылка на скачивание книги.</param>
         private void Validate(string title, string author, int year, string downloadLink)
         {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException(EmptyTitleError);
-
-            if (string.IsNullOrWhiteSpace(author))
-                throw new ArgumentException(EmptyAuthorError);
-
-            if (year < 0)
-                throw new ArgumentException(InvalidYearError);
-
-            if (string.IsNullOrWhiteSpace(downloadLink))
-                throw new ArgumentException(EmptyDownloadLinkError);
+            throw new NotImplementedException("Метод Validate не реализован");
         }
 
+        /// <summary>
+        /// Отображает информацию о книге.
+        /// </summary>
         public void DisplayInfo()
         {
-            Console.WriteLine($"Digital Book: {Title} by {Author} ({Year}), Download: {DownloadLink}");
+            throw new NotImplementedException("Метод DisplayInfo не реализован");
         }
     }
 }

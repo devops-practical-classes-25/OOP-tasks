@@ -1,6 +1,5 @@
 namespace LibraryProject.Interfaces;
 
-public interface IBookFormat
-{
-    void DisplayInfo();
-}
+/// <summary>
+/// Интерфейс, определяющий формат книги.
+/// </summary>

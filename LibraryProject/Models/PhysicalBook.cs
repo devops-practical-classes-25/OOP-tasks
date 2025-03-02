@@ -12,31 +12,36 @@ namespace LibraryProject.Models
 
         public int CopiesAvailable { get; private set; }
 
+        /// <summary>
+        /// Создает экземпляр физической книги с заданными параметрами.
+        /// </summary>
+        /// <param name="title">Название книги.</param>
+        /// <param name="author">Автор книги.</param>
+        /// <param name="year">Год издания книги.</param>
+        /// <param name="copiesAvailable">Количество доступных копий книги.</param>
         public PhysicalBook(string title, string author, int year, int copiesAvailable)
             : base(title, author, year)
         {
-            Validate(title, author, year, copiesAvailable);
-            CopiesAvailable = copiesAvailable;
+            throw new NotImplementedException("Конструктор не реализован");
         }
 
+        /// <summary>
+        /// Проверяет корректность данных книги.
+        /// </summary>
+        /// <param name="title">Название книги.</param>
+        /// <param name="author">Автор книги.</param>
+        /// <param name="year">Год издания книги.</param>
+        /// <param name="copiesAvailable">Количество доступных копий книги.</param>
         private void Validate(string title, string author, int year, int copiesAvailable)
         {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException(EmptyTitleError);
-
-            if (string.IsNullOrWhiteSpace(author))
-                throw new ArgumentException(EmptyAuthorError);
-
-            if (year < 0)
-                throw new ArgumentException(InvalidYearError);
-
-            if (copiesAvailable < 0)
-                throw new ArgumentException(NegativeCopiesError);
+            throw new NotImplementedException("Метод Validate не реализован");
         }
 
+        /// <summary>
+        /// Отображает информацию о книге.
         public void DisplayInfo()
         {
-            Console.WriteLine($"Physical Book: {Title} by {Author} ({Year}), Copies available: {CopiesAvailable}");
+            throw new NotImplementedException("Метод DisplayInfo не реализован");
         }
     }
 }
