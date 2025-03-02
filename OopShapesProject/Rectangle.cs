@@ -23,11 +23,7 @@ public class Rectangle : Shape
     /// </exception>
     public Rectangle(double width, double height)
     {
-        if (width <= 0 || height <= 0)
-            throw new ArgumentException("Ширина и высота должны быть положительными числами");
-
-        Width = width;
-        Height = height;
+        throw new NotImplementedException("Конструктор не реализован");
     }
 
     /// <summary>
@@ -36,7 +32,7 @@ public class Rectangle : Shape
     /// <returns>Площадь прямоугольника, вычисленная по формуле width * height.</returns>
     public override double GetArea()
     {
-        return Width * Height;
+        throw new NotImplementedException("Метод GetArea не реализован");
     }
 
     /// <summary>
@@ -45,6 +41,6 @@ public class Rectangle : Shape
     /// <returns>Периметр прямоугольника, вычисленный по формуле 2 * (width + height).</returns>
     public override double GetPerimeter()
     {
-        return 2 * (Width + Height);
+        throw new NotImplementedException("Метод GetPerimeter не реализован");
     }
 }

@@ -9,9 +9,7 @@ public class Circle : Shape
     /// <exception cref="ArgumentException">Выбрасывается, если радиус меньше или равен нулю.</exception>
     public Circle(double radius)
     {
-        if (radius <= 0)
-            throw new ArgumentException("Радиус должен быть положительным числом");
-        Radius = radius;
+        throw new NotImplementedException("Конструктор не реализован");
     }
 
     /// <summary>
@@ -20,7 +18,7 @@ public class Circle : Shape
     /// <returns>Площадь окружности, вычисленная по формуле π * r².</returns>
     public override double GetArea()
     {
-        return Math.PI * Radius * Radius;
+        throw new NotImplementedException("Метод GetArea не реализован");
     }
 
     /// <summary>
@@ -29,6 +27,6 @@ public class Circle : Shape
     /// <returns>Длина окружности, вычисленная по формуле 2 * π * r.</returns>
     public override double GetPerimeter()
     {
-        return 2 * Math.PI * Radius;
+        throw new NotImplementedException("Метод GetPerimeter не реализован");
     }
 }
