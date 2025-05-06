@@ -15,6 +15,7 @@ public class UserComparer : IComparer<User>
     /// </returns>
     public int Compare(User? x, User? y)
     {
-        throw new NotImplementedException("Метод Compare не реализован.");
+        if (x == null || y == null) return 0;
+        return string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
     }
 }
